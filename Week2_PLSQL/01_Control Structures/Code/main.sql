@@ -1,6 +1,4 @@
--- Exercise 1
 
--- Creating Customers table
 CREATE TABLE Customers (
     CustomerID NUMBER PRIMARY KEY,
     Name VARCHAR2(100),
@@ -9,7 +7,7 @@ CREATE TABLE Customers (
     LastModified DATE
 );
 
--- Creating Accounts table
+
 CREATE TABLE Accounts (
     AccountID NUMBER PRIMARY KEY,
     CustomerID NUMBER,
@@ -19,7 +17,7 @@ CREATE TABLE Accounts (
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
--- Creating Transactions table
+
 CREATE TABLE Transactions (
     TransactionID NUMBER PRIMARY KEY,
     AccountID NUMBER,
@@ -29,7 +27,7 @@ CREATE TABLE Transactions (
     FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID)
 );
 
--- Creating Loans table
+
 CREATE TABLE Loans (
     LoanID NUMBER PRIMARY KEY,
     CustomerID NUMBER,
@@ -40,7 +38,7 @@ CREATE TABLE Loans (
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
--- Creating Employees table
+
 CREATE TABLE Employees (
     EmployeeID NUMBER PRIMARY KEY,
     Name VARCHAR2(100),
@@ -50,49 +48,48 @@ CREATE TABLE Employees (
     HireDate DATE
 );
 
--- Inserting sample data into Customers table
+
 INSERT INTO Customers (CustomerID, Name, DOB, Balance, LastModified)
 VALUES (1, 'John Doe', TO_DATE('1963-05-15', 'YYYY-MM-DD'), 1000, SYSDATE);
 
 INSERT INTO Customers (CustomerID, Name, DOB, Balance, LastModified)
 VALUES (2, 'Jane Smith', TO_DATE('1990-07-20', 'YYYY-MM-DD'), 1500, SYSDATE);
 
--- Inserting sample data into Accounts table
+
 INSERT INTO Accounts (AccountID, CustomerID, AccountType, Balance, LastModified)
 VALUES (1, 1, 'Savings', 1000, SYSDATE);
 
 INSERT INTO Accounts (AccountID, CustomerID, AccountType, Balance, LastModified)
 VALUES (2, 2, 'Checking', 1500, SYSDATE);
 
--- Inserting sample data into Transactions table
+
 INSERT INTO Transactions (TransactionID, AccountID, TransactionDate, Amount, TransactionType)
 VALUES (1, 1, SYSDATE, 200, 'Deposit');
 
 INSERT INTO Transactions (TransactionID, AccountID, TransactionDate, Amount, TransactionType)
 VALUES (2, 2, SYSDATE, 300, 'Withdrawal');
 
--- Inserting sample data into Loans table
+
 INSERT INTO Loans (LoanID, CustomerID, LoanAmount, InterestRate, StartDate, EndDate)
 VALUES (1, 1, 5000, 5, SYSDATE, ADD_MONTHS(SYSDATE, 60));
 
 INSERT INTO Loans (LoanID, CustomerID, LoanAmount, InterestRate, StartDate, EndDate)
 VALUES (2, 2, 10000, 5, SYSDATE, SYSDATE + 25);
 
--- Inserting sample data into Employees table
+
 INSERT INTO Employees (EmployeeID, Name, Position, Salary, Department, HireDate)
 VALUES (1, 'Alice Johnson', 'Manager', 70000, 'HR', TO_DATE('2015-06-15', 'YYYY-MM-DD'));
 
 INSERT INTO Employees (EmployeeID, Name, Position, Salary, Department, HireDate)
 VALUES (2, 'Bob Brown', 'Developer', 60000, 'IT', TO_DATE('2017-03-20', 'YYYY-MM-DD'));
 
--- Enabling server output
+
 SET SERVEROUTPUT ON;
 
--- Adding IsVIP column to Customers table
+
 ALTER TABLE Customers ADD IsVIP CHAR(1);
 
--- SCENARIO - 1
--- Procedure to apply interest discount to customers above 60 years old
+
 CREATE OR REPLACE PROCEDURE ApplyInterestDiscount IS
     CURSOR cur IS
         SELECT CustomerID, DOB FROM Customers;
@@ -112,8 +109,7 @@ BEGIN
 END ApplyInterestDiscount;
 /
 
--- SCENARIO - 2
--- Procedure to promote customers to VIP status based on balance
+
 CREATE OR REPLACE PROCEDURE PromoteToVIP IS
     CURSOR cur IS
         SELECT CustomerID, Balance FROM Accounts;
@@ -137,8 +133,7 @@ BEGIN
 END PromoteToVIP;
 /
 
--- SCENARIO - 3
--- Procedure to send loan reminders for loans due within the next 30 days
+
 CREATE OR REPLACE PROCEDURE SendLoanReminders IS
     CURSOR cur IS
         SELECT CustomerID, EndDate 
@@ -154,7 +149,7 @@ BEGIN
 END SendLoanReminders;
 /
 
--- Calling the procedures
+
 BEGIN
     DBMS_OUTPUT.PUT_LINE('SCENARIO - 1: For applying discount to interest rate for the customers above age 60');
     ApplyInterestDiscount;
